@@ -3,17 +3,16 @@ import { Button, TextField, Container, Grid, Typography } from "@mui/material";
 import { secondaryColor } from "../../../utils/colors";
 import { Field, Form, Formik } from "formik";
 import LoginSchema from "../../../validators/loginSchema";
+import UserService from "../../../services/userService";
 
 const LoginForm = () => {
   const initialValues = {
     email: "",
     password: "",
   };
-  const handleSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      console.log(values);
-      setSubmitting(false);
-    }, 500);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    await UserService.signIn(values);
+    setSubmitting(false);
   };
 
   return (
