@@ -3,7 +3,6 @@ import {
   accentColor,
   mainColor,
   secondaryAccentColor,
-  secondaryColor,
   textColor,
 } from "./colors";
 
@@ -63,6 +62,19 @@ const theme = createTheme({
           [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
             borderColor: secondaryAccentColor,
           },
+        },
+      },
+    },
+    MuiListItem: {
+      root: {
+        backgroundColor: accentColor,
+        "&:hover": {
+          backgroundColor: accentColor,
+        },
+      },
+      styleOverrides: {
+        "&:hover": {
+          backgroundColor: accentColor,
         },
       },
     },
