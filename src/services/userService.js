@@ -1,25 +1,26 @@
 import { signInRoute, signUpRoute } from "../config/routes";
 import apiClient from "../utils/apiClient";
+import { setAccessAndRefreshToken } from "./tokenService";
 
 const UserService = {
   signUp: async (values) => {
     try {
       const res = await apiClient.post(signUpRoute, values);
-      const { accessToken, refreshToken } = res.data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      setAccessAndRefreshToken(res.data);
+      return true;
     } catch (error) {
       console.log(`Error signing up: ${error}`);
+      return false;
     }
   },
   signIn: async (values) => {
     try {
       const res = await apiClient.post(signInRoute, values);
-      const { accessToken, refreshToken } = res.data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      setAccessAndRefreshToken(res.data);
+      return true;
     } catch (error) {
       console.log(`Error signing in: ${error}`);
+      return false;
     }
   },
 };

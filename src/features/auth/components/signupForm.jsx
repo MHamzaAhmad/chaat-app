@@ -4,8 +4,10 @@ import { secondaryColor } from "../../../utils/colors";
 import { Field, Form, Formik } from "formik";
 import SignupSchema from "../../../validators/signupSchema";
 import UserService from "../../../services/userService";
+import { useUser } from "../../../redux/hooks";
 
 const SignupForm = () => {
+  const { setIsAuthenticated } = useUser();
   const initialValues = {
     name: "",
     email: "",
@@ -13,19 +15,13 @@ const SignupForm = () => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    await UserService.signUp(values);
+    const isAuthenticated = await UserService.signUp(values);
+    setIsAuthenticated(isAuthenticated);
     setSubmitting(false);
   };
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        background: secondaryColor,
-        padding: "5rem",
-        borderRadius: "0.5rem",
-      }}
-    >
+    <>
       <Typography variant="h4" align="center" gutterBottom>
         Signup
       </Typography>
@@ -80,7 +76,7 @@ const SignupForm = () => {
           </Form>
         )}
       </Formik>
-    </Container>
+    </>
   );
 };
 

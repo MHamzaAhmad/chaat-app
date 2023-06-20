@@ -3,6 +3,7 @@ import {
   accentColor,
   mainColor,
   secondaryAccentColor,
+  secondaryColor,
   textColor,
 } from "./colors";
 
@@ -28,6 +29,9 @@ const theme = createTheme({
           "&.Mui-disabled": {
             backgroundColor: "#C4C4C4",
           },
+        },
+        text: {
+          color: accentColor,
         },
       },
     },

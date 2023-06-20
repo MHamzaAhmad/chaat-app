@@ -1,29 +1,24 @@
 import React from "react";
-import { Button, TextField, Container, Grid, Typography } from "@mui/material";
-import { secondaryColor } from "../../../utils/colors";
+import { Button, TextField, Grid, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import LoginSchema from "../../../validators/loginSchema";
 import UserService from "../../../services/userService";
+import { useUser } from "../../../redux/hooks";
 
 const LoginForm = () => {
+  const { setIsAuthenticated } = useUser();
   const initialValues = {
     email: "",
     password: "",
   };
   const handleSubmit = async (values, { setSubmitting }) => {
-    await UserService.signIn(values);
+    const isAuthenticated = await UserService.signIn(values);
+    setIsAuthenticated(isAuthenticated);
     setSubmitting(false);
   };
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        background: secondaryColor,
-        padding: "5rem",
-        borderRadius: "0.5rem",
-      }}
-    >
+    <>
       <Typography variant="h4" align="center" gutterBottom>
         Login
       </Typography>
@@ -41,6 +36,7 @@ const LoginForm = () => {
                   id="email"
                   name="email"
                   label="Email"
+                  type="email"
                   fullWidth
                   error={touched.email && Boolean(errors.email)}
                   helperText={touched.email && errors.email}
@@ -52,6 +48,7 @@ const LoginForm = () => {
                   id="password"
                   name="password"
                   label="Password"
+                  type="password"
                   fullWidth
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password && errors.password}
@@ -66,7 +63,7 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
-    </Container>
+    </>
   );
 };
 
