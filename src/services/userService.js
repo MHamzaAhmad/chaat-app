@@ -1,5 +1,5 @@
 import { signInRoute, signUpRoute } from "../config/routes";
-import apiClient from "../utils/apiClient";
+import apiClient from "../contexts/apiContext";
 import { setAccessAndRefreshToken } from "./tokenService";
 
 const UserService = {

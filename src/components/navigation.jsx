@@ -228,8 +228,15 @@ export default function Navigation() {
           })}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+      <DrawerHeader />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          marginTop: "4rem",
+        }}
+      >
         {rootNavigationStack[tabKey].component}
       </Box>
     </Box>

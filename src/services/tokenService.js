@@ -1,8 +1,7 @@
 import { refreshTokensRoute } from "../config/routes";
-import apiClient from "../utils/apiClient";
 
-export const refreshTokens = async () => {
-  const res = await apiClient.get(refreshTokensRoute);
+export const refreshTokens = async (api) => {
+  const res = await api.get(refreshTokensRoute);
   if (res.status === 401) {
     throw new Error("Refresh token is expired");
   }
@@ -20,4 +19,9 @@ export const getRefreshToken = () => {
 export const setAccessAndRefreshToken = ({ accessToken, refreshToken }) => {
   localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
+};
+
+export const removeTokens = () => {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
 };
