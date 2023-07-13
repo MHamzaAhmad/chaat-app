@@ -1,15 +1,31 @@
 import { Box } from "@mui/material";
-import { secondaryColor } from "../../../utils/colors";
+import Messenger from "./messenger";
+import StartNewChat from "./startNewChat";
+import { useUser } from "../../../redux/hooks";
+import _ from "lodash";
 
-const Chats = ({ chats }) => {
+const Chats = () => {
+  const { chats } = useUser();
   return (
     <>
       <Box
         sx={{
-          borderRight: `1px solid rgba(0, 0, 0, 0.12);`,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
         }}
       >
-        Somthine
+        <Box
+          sx={{
+            overflowY: "scroll",
+          }}
+        >
+          {!_.isEmpty(chats) &&
+            chats.map((user) => <Messenger key={user._id} user={user} />)}
+        </Box>
+        <StartNewChat />
       </Box>
     </>
   );

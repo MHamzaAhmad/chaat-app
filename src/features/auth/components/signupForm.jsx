@@ -1,13 +1,13 @@
 import React from "react";
-import { Button, TextField, Container, Grid, Typography } from "@mui/material";
-import { secondaryColor } from "../../../utils/colors";
+import { Button, TextField, Grid, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import SignupSchema from "../../../validators/signupSchema";
-import UserService from "../../../services/userService";
+import { useUserService } from "../../../services/userService";
 import { useUser } from "../../../redux/hooks";
 
 const SignupForm = () => {
   const { setIsAuthenticated } = useUser();
+  const { userService } = useUserService();
   const initialValues = {
     name: "",
     email: "",
@@ -15,7 +15,7 @@ const SignupForm = () => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const isAuthenticated = await UserService.signUp(values);
+    const isAuthenticated = await userService.signUp(values);
     setIsAuthenticated(isAuthenticated);
     setSubmitting(false);
   };

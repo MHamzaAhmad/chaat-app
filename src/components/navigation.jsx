@@ -16,8 +16,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import { AdminPanelSettings, Group } from "@mui/icons-material";
+import { AdminPanelSettings, Group, Person } from "@mui/icons-material";
 import { accentColor, lighterAccentColor, mainColor } from "../utils/colors";
 import Groups from "../features/groups/Groups";
 import Inbox from "../features/inbox/inbox";
@@ -28,7 +27,7 @@ const drawerWidth = 240;
 const rootNavigationStack = {
   inbox: {
     type: "component",
-    icon: <InboxIcon />,
+    icon: <Person />,
     component: <Inbox />,
   },
   groups: {

@@ -1,6 +1,10 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import io from "socket.io-client";
-import { refreshTokens, removeTokens } from "../services/tokenService";
+import {
+  hasTokens,
+  refreshTokens,
+  removeTokens,
+} from "../services/tokenService";
 import { useUser } from "../redux/hooks";
 import { useApi } from "./apiContext";
 
@@ -22,9 +26,13 @@ const SocketManager = ({ children }) => {
   socket.on("connect_error", async (error) => {
     if (error.message === "jwt expired") {
       try {
+        if (!hasTokens()) return;
         await refreshTokens(api);
-        removeTokens();
+        setIsAuthenticated(true);
       } catch (e) {
+        console.log("errror after the expiration");
+        console.log(e);
+        removeTokens();
         setIsAuthenticated(false);
       }
     }

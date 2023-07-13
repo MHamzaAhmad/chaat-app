@@ -2,17 +2,18 @@ import React from "react";
 import { Button, TextField, Grid, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import LoginSchema from "../../../validators/loginSchema";
-import UserService from "../../../services/userService";
+import { useUserService } from "../../../services/userService";
 import { useUser } from "../../../redux/hooks";
 
 const LoginForm = () => {
   const { setIsAuthenticated } = useUser();
+  const { userService } = useUserService();
   const initialValues = {
     email: "",
     password: "",
   };
   const handleSubmit = async (values, { setSubmitting }) => {
-    const isAuthenticated = await UserService.signIn(values);
+    const isAuthenticated = await userService.signIn(values);
     setIsAuthenticated(isAuthenticated);
     setSubmitting(false);
   };

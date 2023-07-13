@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   getAccessToken,
+  hasTokens,
   refreshTokens,
   removeTokens,
 } from "../services/tokenService";
@@ -35,7 +36,9 @@ const ApiManager = ({ children }) => {
       const originalReq = error.config;
       if (error.response.status === 401) {
         try {
+          if (!hasTokens()) throw new Error();
           await refreshTokens(api);
+          setIsAuthenticated(true);
           await api(originalReq);
         } catch (error) {
           removeTokens();
