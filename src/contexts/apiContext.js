@@ -7,6 +7,7 @@ import {
 } from "../services/tokenService";
 import { createContext, useContext } from "react";
 import { useUser } from "../redux/hooks";
+import { useUserService } from "../services/userService";
 
 const ApiContext = createContext({
   api: {},
@@ -16,6 +17,7 @@ export const useApi = () => useContext(ApiContext);
 
 const ApiManager = ({ children }) => {
   const { setIsAuthenticated } = useUser();
+  const { userService } = useUserService();
   const api = axios.create({ baseURL: process.env.REACT_APP_BASE_URL });
 
   api.interceptors.request.use(
@@ -41,8 +43,7 @@ const ApiManager = ({ children }) => {
           setIsAuthenticated(true);
           await api(originalReq);
         } catch (error) {
-          removeTokens();
-          setIsAuthenticated(false);
+          await userService.logout();
         }
       }
     }

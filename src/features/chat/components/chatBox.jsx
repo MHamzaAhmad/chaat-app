@@ -5,14 +5,24 @@ import { useUser } from "../../../redux/hooks";
 import { useMessageService } from "../../../services/messageService";
 import { useState } from "react";
 import ChatHeader from "./ChatHeader";
+import MessagesBox from "./messagesBox";
+import { useEventEmitter } from "../../../contexts/eventEmitter";
+import { rndStr } from "../../../utils/helpers";
 
 const ChatBox = (props) => {
-  const [msg, setMsg] = useState({});
-  const { subject } = useUser();
+  const [msg, setMsg] = useState("");
+  const { subject, user } = useUser();
   const { messageService } = useMessageService();
+  const { eventEmitter } = useEventEmitter();
 
   const sendMessage = () => {
     messageService.sendMessage(msg, subject._id);
+    eventEmitter.emit("newMessage", {
+      content: msg,
+      _id: rndStr(),
+      sender: user._id,
+    });
+    setMsg("");
   };
   return (
     <Box
@@ -20,23 +30,28 @@ const ChatBox = (props) => {
         width: "100%",
         display: "flex",
         flexDirection: "column",
-        height: "100%",
         justifyContent: "space-between",
+        height: "86vh",
       }}
     >
       <ChatHeader />
+      <MessagesBox />
       <Box
         sx={{
           background: secondaryColor,
-          width: "100%",
           padding: "0.6rem 1rem",
         }}
       >
         <TextField
           placeholder="Shoot the msg from here..."
+          value={msg}
           onChange={(e) => {
-            console.log(e);
             setMsg(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              sendMessage();
+            }
           }}
           InputProps={{
             endAdornment: (

@@ -14,7 +14,8 @@ const Messenger = ({ user, onClick }) => {
           backgroundColor: secondaryAccentColor,
         },
       }}
-      onClick={() => {
+      onClick={(e) => {
+        e.preventDefault();
         setSubject(user);
         if (onClick) onClick();
       }}

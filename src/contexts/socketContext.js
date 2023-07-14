@@ -7,6 +7,7 @@ import {
 } from "../services/tokenService";
 import { useUser } from "../redux/hooks";
 import { useApi } from "./apiContext";
+import { useUserService } from "../services/userService";
 
 const SocketContext = createContext({
   io: {},
@@ -16,6 +17,7 @@ export const useIO = () => useContext(SocketContext);
 
 const SocketManager = ({ children }) => {
   const { setIsAuthenticated } = useUser();
+  const { userService } = useUserService();
   const { api } = useApi();
   const socket = io(process.env.REACT_APP_SOCKET_URL, {
     extraHeaders: {
@@ -30,10 +32,7 @@ const SocketManager = ({ children }) => {
         await refreshTokens(api);
         setIsAuthenticated(true);
       } catch (e) {
-        console.log("errror after the expiration");
-        console.log(e);
-        removeTokens();
-        setIsAuthenticated(false);
+        await userService.logout();
       }
     }
   });

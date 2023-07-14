@@ -16,11 +16,19 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { AdminPanelSettings, Group, Person } from "@mui/icons-material";
+import {
+  AdminPanelSettings,
+  Group,
+  Logout,
+  Person,
+  PersonOffOutlined,
+} from "@mui/icons-material";
 import { accentColor, lighterAccentColor, mainColor } from "../utils/colors";
 import Groups from "../features/groups/Groups";
 import Inbox from "../features/inbox/inbox";
 import { capitalize } from "lodash";
+import { useUserService } from "../services/userService";
+import ProfileComponent from "../features/profile/profileComponent";
 
 const drawerWidth = 240;
 
@@ -36,6 +44,16 @@ const rootNavigationStack = {
     component: <Groups />,
   },
   d1: {
+    type: "divider",
+    icon: null,
+    component: null,
+  },
+  profile: {
+    type: "component",
+    icon: <PersonOffOutlined />,
+    component: <ProfileComponent />,
+  },
+  d2: {
     type: "divider",
     icon: null,
     component: null,
@@ -73,7 +91,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -165,6 +182,7 @@ const Item = ({ val, onClick, open }) => {
 
 export default function Navigation() {
   const theme = useTheme();
+  const { userService } = useUserService();
   const [open, setOpen] = React.useState(false);
   const [tabKey, setTabKey] = React.useState("inbox");
 
@@ -199,7 +217,20 @@ export default function Navigation() {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+        <DrawerHeader
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <IconButton
+            onClick={(e) => {
+              e.preventDefault();
+              userService.logout();
+            }}
+          >
+            <Logout />
+          </IconButton>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />

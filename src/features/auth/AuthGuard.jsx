@@ -6,7 +6,10 @@ import Navigation from "../../components/navigation";
 const AuthGuard = ({ children }) => {
   const { isAuthenticated, checkIsAuthenticated } = useUser();
   useEffect(() => {
-    checkIsAuthenticated();
+    async function check() {
+      await checkIsAuthenticated();
+    }
+    check();
   }, []);
   if (!isAuthenticated) return <AuthComponent />;
 

@@ -16,7 +16,7 @@ const SignupForm = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const isAuthenticated = await userService.signUp(values);
-    setIsAuthenticated(isAuthenticated);
+    if (isAuthenticated) await userService.login();
     setSubmitting(false);
   };
 
